@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import edu.nyu.xiaoqianyu.tictactoe.activity.GamePlayActivity;
+import edu.nyu.xiaoqianyu.tictactoe.activity.LevelChooseActivity;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.VsMode;
 
 
@@ -32,8 +33,8 @@ public class MainActivity extends ActionBarActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), GamePlayActivity.class);
-                intent.putExtra(CHOSEN_BUTTON, PLAYER_VS_COM_ID);
+                Intent intent = new Intent(v.getContext(), LevelChooseActivity.class);
+                //intent.putExtra(CHOSEN_BUTTON, PLAYER_VS_COM_ID);
                 startActivity(intent);
                 finish();
             }

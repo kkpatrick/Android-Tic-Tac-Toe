@@ -3,8 +3,11 @@ package edu.nyu.xiaoqianyu.tictactoe.model;
 import android.os.Handler;
 
 import de.greenrobot.event.EventBus;
+import edu.nyu.xiaoqianyu.tictactoe.computerAI.AIPlayer;
+import edu.nyu.xiaoqianyu.tictactoe.computerAI.AIPlayerMinimax;
 import edu.nyu.xiaoqianyu.tictactoe.computerAI.AIPlayerTableLookup;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.Board;
+import edu.nyu.xiaoqianyu.tictactoe.dataType.GameLevel;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.PlayerRole;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.Seed;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.VsMode;
@@ -19,11 +22,20 @@ public class GameModel {
     private Board board;
     private VsMode VsMode;
     private PlayerRole currentPlayer; //player1 uses circle, player2 and computer use cross
+    private GameLevel gameLevel;
 
     public GameModel(VsMode mode) {
         board = new Board();
         VsMode = mode;
         currentPlayer = PlayerRole.PLAYER1;
+        gameLevel = GameLevel.EASY;
+    }
+
+    public GameModel(VsMode mode, GameLevel level) {
+        board = new Board();
+        VsMode = mode;
+        currentPlayer = PlayerRole.PLAYER1;
+        gameLevel = level;
     }
 
     public void cellOnTouch(int row, int col){
@@ -68,7 +80,13 @@ public class GameModel {
     }
 
     private int[] computerMove() {
-        AIPlayerTableLookup computerPlayer = new AIPlayerTableLookup(board);
+        AIPlayer computerPlayer;
+        if(gameLevel == GameLevel.HARD) {
+            computerPlayer = new AIPlayerMinimax(board);
+        }
+        else {
+            computerPlayer = new AIPlayerTableLookup(board);
+        }
         int[] computerMovRes = computerPlayer.move();
         if(computerMovRes == null) return null;
         return new int[]{computerMovRes[0], computerMovRes[1]};

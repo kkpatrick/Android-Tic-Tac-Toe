@@ -16,6 +16,7 @@ import android.widget.Toast;
 import de.greenrobot.event.EventBus;
 import edu.nyu.xiaoqianyu.tictactoe.MainActivity;
 import edu.nyu.xiaoqianyu.tictactoe.R;
+import edu.nyu.xiaoqianyu.tictactoe.dataType.GameLevel;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.Seed;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.VsMode;
 import edu.nyu.xiaoqianyu.tictactoe.events.CellTouchEvent;
@@ -34,11 +35,17 @@ public class GamePlayActivity extends ActionBarActivity {
         VsMode mode;
         if(getIntent().getExtras().getInt(MainActivity.CHOSEN_BUTTON) == MainActivity.PLAYER_VS_COM_ID){
             mode = VsMode.PLAYER_VS_COM;
+            if(getIntent().getExtras().getInt(LevelChooseActivity.GAME_LEVEL) == LevelChooseActivity.EASY_MODE_ID) {
+                gameModel = new GameModel(mode, GameLevel.EASY);
+            }
+            else {
+                gameModel = new GameModel(mode, GameLevel.HARD);
+            }
         }
         else {
             mode = VsMode.PLAYER_VS_PLAYER;
+            gameModel = new GameModel(mode);
         }
-        gameModel = new GameModel(mode);
 
         buttons[0][0] = (ImageButton)findViewById(R.id.button00);
         buttons[0][1] = (ImageButton)findViewById(R.id.button01);

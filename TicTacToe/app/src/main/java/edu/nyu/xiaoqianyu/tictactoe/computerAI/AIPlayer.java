@@ -27,5 +27,5 @@ public abstract class AIPlayer {
     }
 
     /** Abstract method to get next move. Return int[2] of {row, col} */
-    abstract int[] move();  // to be implemented by subclasses
+    public abstract int[] move();  // to be implemented by subclasses
 }
