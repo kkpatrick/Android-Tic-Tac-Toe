@@ -1,6 +1,9 @@
 package edu.nyu.xiaoqianyu.tictactoe.model;
 
+import android.os.Handler;
+
 import de.greenrobot.event.EventBus;
+import edu.nyu.xiaoqianyu.tictactoe.computerAI.AIPlayerTableLookup;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.Board;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.PlayerRole;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.Seed;
@@ -36,18 +39,42 @@ public class GameModel {
             EventBus.getDefault().post(new CellTouchEvent(row, col, Seed.CROSS));
         }
         //judge if someone wins
-        judgeWhoWins();
-
+        boolean ifMatchOver = judgeWhoWins();
+        if(ifMatchOver == true) return;
         //after every, we must change player
         changePlayer();
 
         //if it's computer's turn, AI player plays by itself
         if(currentPlayer == PlayerRole.COMPUTER) {
+            int[] comMove = computerMove();
+            if(comMove == null) return;
+            board.getCells()[comMove[0]][comMove[1]].setContent(Seed.CROSS);
 
+            //wait some time then change the cell
+            Handler handlerEvent = new Handler();
+            final int comMovRow = comMove[0];
+            final int comMovCol = comMove[1];
+            handlerEvent.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    EventBus.getDefault().post(new CellTouchEvent(comMovRow, comMovCol, Seed.CROSS));
+                }
+            }, 500);
+
+            ifMatchOver = judgeWhoWins();
+            if(ifMatchOver == true) return;
+            changePlayer();
         }
     }
 
-    private void judgeWhoWins() {
+    private int[] computerMove() {
+        AIPlayerTableLookup computerPlayer = new AIPlayerTableLookup(board);
+        int[] computerMovRes = computerPlayer.move();
+        if(computerMovRes == null) return null;
+        return new int[]{computerMovRes[0], computerMovRes[1]};
+    }
+
+    private boolean judgeWhoWins() {
         boolean isSomeoneWins = false;
         //horizontal
         for(int i = 0; i <= 2; i++) {
@@ -63,7 +90,7 @@ public class GameModel {
                             //player1 wins
                             isSomeoneWins = true;
                             EventBus.getDefault().post(new MatchOverEvent(true, PlayerRole.PLAYER1));
-                            return;
+                            return true;
                         }
                         else if(board.getCells()[i][j].getContent() == Seed.CROSS){
                             //player2 or computer wins
@@ -74,7 +101,7 @@ public class GameModel {
                             else {
                                 EventBus.getDefault().post(new MatchOverEvent(true, PlayerRole.PLAYER2));
                             }
-                            return;
+                            return true;
                         }
                         else {
                             //continue;
@@ -98,7 +125,7 @@ public class GameModel {
                             //player1 wins
                             isSomeoneWins = true;
                             EventBus.getDefault().post(new MatchOverEvent(true, PlayerRole.PLAYER1));
-                            return;
+                            return true;
                         }
                         else if(board.getCells()[i][j].getContent() == Seed.CROSS){
                             //player2 or computer wins
@@ -109,7 +136,7 @@ public class GameModel {
                             else {
                                 EventBus.getDefault().post(new MatchOverEvent(true, PlayerRole.PLAYER2));
                             }
-                            return;
+                            return true;
                         }
                         else {
                             //continue;
@@ -144,7 +171,7 @@ public class GameModel {
                             EventBus.getDefault().post(new MatchOverEvent(true, PlayerRole.PLAYER2));
                         }
                     }
-                    return;
+                    return true;
                 }
             }
         }
@@ -172,7 +199,7 @@ public class GameModel {
                             EventBus.getDefault().post(new MatchOverEvent(true, PlayerRole.PLAYER2));
                         }
                     }
-                    return;
+                    return true;
                 }
             }
         }
@@ -186,8 +213,10 @@ public class GameModel {
             }
         }
         if(emptyExist == false){
-            EventBus.getDefault().post(new MatchOverEvent(false)); //no one wins
+            EventBus.getDefault().post(new MatchOverEvent(false)); //no one wins, draw
+            return true;
         }
+        return false;
     }
 
     private void changePlayer() {

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import edu.nyu.xiaoqianyu.tictactoe.activity.GamePlayActivity;
+import edu.nyu.xiaoqianyu.tictactoe.dataType.VsMode;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -16,6 +17,8 @@ public class MainActivity extends ActionBarActivity {
     public static String PLAYER_VS_COM = "Player_vs_com";
     public static String PLAYER1_VS_PLAYER2 = "Player1_vs_player2";
     public static String CHOSEN_BUTTON = "Chosen_button";
+    public static int PLAYER_VS_COM_ID = 1;
+    public static int PLAYER1_VS_PLAYER2_ID = 2;
     private Button button1;
     private Button button2;
     @Override
@@ -30,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), GamePlayActivity.class);
-                intent.putExtra(CHOSEN_BUTTON, PLAYER_VS_COM);
+                intent.putExtra(CHOSEN_BUTTON, PLAYER_VS_COM_ID);
                 startActivity(intent);
                 finish();
             }
@@ -39,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), GamePlayActivity.class);
-                intent.putExtra(CHOSEN_BUTTON, PLAYER1_VS_PLAYER2);
+                intent.putExtra(CHOSEN_BUTTON, PLAYER1_VS_PLAYER2_ID);
                 startActivity(intent);
                 finish();
             }

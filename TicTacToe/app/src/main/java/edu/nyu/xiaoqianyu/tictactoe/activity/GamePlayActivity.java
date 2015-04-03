@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,12 +24,7 @@ import edu.nyu.xiaoqianyu.tictactoe.model.GameModel;
 
 public class GamePlayActivity extends ActionBarActivity {
 
-    private int touchedCellRow, touchedCellCol;
     private GameModel gameModel;
-    /*
-    private ImageButton button00, button01, button02,
-            button10, button11, button12,
-            button20, button21, button22;*/
     private ImageButton[][] buttons = new ImageButton[3][3];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +32,7 @@ public class GamePlayActivity extends ActionBarActivity {
         setContentView(R.layout.activity_game_play);
 
         VsMode mode;
-        if(getIntent().getExtras().getString(MainActivity.CHOSEN_BUTTON) == MainActivity.PLAYER_VS_COM){
+        if(getIntent().getExtras().getInt(MainActivity.CHOSEN_BUTTON) == MainActivity.PLAYER_VS_COM_ID){
             mode = VsMode.PLAYER_VS_COM;
         }
         else {
@@ -54,86 +50,18 @@ public class GamePlayActivity extends ActionBarActivity {
         buttons[2][1] = (ImageButton)findViewById(R.id.button21);
         buttons[2][2] = (ImageButton)findViewById(R.id.button22);
 
-        buttons[0][0].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 0;
-                touchedCellCol = 0;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
+        for(int i = 0; i <= 2; i++) {
+            for(int j = 0; j <= 2; j ++) {
+                final int touchedCellRow = i;
+                final int touchedCellCol = j;
+                buttons[i][j].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
+                    }
+                });
             }
-        });
-
-        buttons[0][1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 0;
-                touchedCellCol = 1;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
-            }
-        });
-
-        buttons[0][2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 0;
-                touchedCellCol = 2;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
-            }
-        });
-
-        buttons[1][0].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 1;
-                touchedCellCol = 0;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
-            }
-        });
-
-        buttons[1][1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 1;
-                touchedCellCol = 1;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
-            }
-        });
-
-        buttons[1][2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 1;
-                touchedCellCol = 2;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
-            }
-        });
-
-        buttons[2][0].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 2;
-                touchedCellCol = 0;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
-            }
-        });
-
-        buttons[2][1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 2;
-                touchedCellCol = 1;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
-            }
-        });
-
-        buttons[2][2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchedCellRow = 2;
-                touchedCellCol = 2;
-                gameModel.cellOnTouch(touchedCellRow, touchedCellCol);
-            }
-        });
+        }
 
         EventBus.getDefault().register(this);
     }
@@ -173,8 +101,14 @@ public class GamePlayActivity extends ActionBarActivity {
                         finish();
                     }
                 });
-        AlertDialog alertDialog = matchOverDialog.create();
-        alertDialog.show();
+        final AlertDialog alertDialog = matchOverDialog.create();
+        Handler handlerEvent = new Handler();
+        handlerEvent.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.show();
+            }
+        }, 500);
     }
 
     @Override

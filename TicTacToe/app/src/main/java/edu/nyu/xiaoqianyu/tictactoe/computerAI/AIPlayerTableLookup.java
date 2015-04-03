@@ -28,7 +28,7 @@ public class AIPlayerTableLookup extends AIPlayer {
                 return move;
             }
         }
-        assert false : "No empty cell?!";
+        //assert false : "No empty cell?!";
         return null;
     }
 }
