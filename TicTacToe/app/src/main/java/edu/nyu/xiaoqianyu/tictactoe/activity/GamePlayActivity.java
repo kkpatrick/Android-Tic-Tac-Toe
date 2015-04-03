@@ -9,8 +9,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import de.greenrobot.event.EventBus;
+import edu.nyu.xiaoqianyu.tictactoe.MainActivity;
 import edu.nyu.xiaoqianyu.tictactoe.R;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.Seed;
+import edu.nyu.xiaoqianyu.tictactoe.dataType.VsMode;
 import edu.nyu.xiaoqianyu.tictactoe.events.CellTouchEvent;
 import edu.nyu.xiaoqianyu.tictactoe.model.GameModel;
 
@@ -28,7 +30,14 @@ public class GamePlayActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_play);
 
-        gameModel = new GameModel();
+        VsMode mode;
+        if(getIntent().getExtras().getString(MainActivity.CHOSEN_BUTTON) == MainActivity.PLAYER_VS_COM){
+            mode = VsMode.PLAYER_VS_COM;
+        }
+        else {
+            mode = VsMode.PLAYER_VS_PLAYER;
+        }
+        gameModel = new GameModel(mode);
 
         buttons[0][0] = (ImageButton)findViewById(R.id.button00);
         buttons[0][1] = (ImageButton)findViewById(R.id.button01);
