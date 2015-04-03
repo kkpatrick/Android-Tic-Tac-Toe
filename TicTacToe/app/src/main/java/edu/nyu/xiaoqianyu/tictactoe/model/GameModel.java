@@ -40,6 +40,11 @@ public class GameModel {
 
         //after every, we must change player
         changePlayer();
+
+        //if it's computer's turn, AI player plays by itself
+        if(currentPlayer == PlayerRole.COMPUTER) {
+
+        }
     }
 
     private void judgeWhoWins() {
