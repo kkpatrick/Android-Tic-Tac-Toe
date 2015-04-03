@@ -1,9 +1,10 @@
 package edu.nyu.xiaoqianyu.tictactoe.activity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ public class GamePlayActivity extends ActionBarActivity {
 
     private GameModel gameModel;
     private ImageButton[][] buttons = new ImageButton[3][3];
+    private SoundPool soundPool;
+    private int winnerApplause, loserSound, cellChangedSound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +72,17 @@ public class GamePlayActivity extends ActionBarActivity {
                 });
             }
         }
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 5);
+        winnerApplause = soundPool.load(this, R.raw.applause, 1);
+        loserSound = soundPool.load(this, R.raw.fail, 1);
+        cellChangedSound = soundPool.load(this, R.raw.move, 1);
 
         EventBus.getDefault().register(this);
     }
 
     public void onEventMainThread(CellTouchEvent event) {
-        Toast.makeText(GamePlayActivity.this, "event received" +" " + event.getCellTouchedRow(), Toast.LENGTH_SHORT).show();
+        soundPool.play(cellChangedSound, 0.5f, 0.5f, 1,0,1);
+        //Toast.makeText(GamePlayActivity.this, "event received" +" " + event.getCellTouchedRow(), Toast.LENGTH_SHORT).show();
         if(event.getCellSeed() == Seed.EMPTY) {
             buttons[event.getCellTouchedRow()][event.getCellTouchedCol()].setImageResource(R.mipmap.empty_cell);
         }
@@ -91,10 +99,11 @@ public class GamePlayActivity extends ActionBarActivity {
         String dialogTitle, dialogButton;
         dialogButton = "OK";
         if(event.isSomeOneWins() == true) {
-
+            soundPool.play(winnerApplause, 0.5f, 0.5f, 1,0,1);
             dialogTitle = "Congrats! " + event.getWinner() + " wins!";
         }
         else {
+            soundPool.play(loserSound, 0.5f, 0.5f, 1,0,1);
             dialogTitle = "Congrats! Draw game!";
         }
         AlertDialog.Builder matchOverDialog = new AlertDialog.Builder(this);
