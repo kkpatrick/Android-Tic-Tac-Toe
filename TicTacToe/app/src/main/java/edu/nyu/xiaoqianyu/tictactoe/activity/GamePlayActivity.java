@@ -1,5 +1,8 @@
 package edu.nyu.xiaoqianyu.tictactoe.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +17,7 @@ import edu.nyu.xiaoqianyu.tictactoe.R;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.Seed;
 import edu.nyu.xiaoqianyu.tictactoe.dataType.VsMode;
 import edu.nyu.xiaoqianyu.tictactoe.events.CellTouchEvent;
+import edu.nyu.xiaoqianyu.tictactoe.events.MatchOverEvent;
 import edu.nyu.xiaoqianyu.tictactoe.model.GameModel;
 
 public class GamePlayActivity extends ActionBarActivity {
@@ -144,6 +148,30 @@ public class GamePlayActivity extends ActionBarActivity {
         else if(event.getCellSeed() == Seed.CROSS) {
             buttons[event.getCellTouchedRow()][event.getCellTouchedCol()].setImageResource(R.mipmap.cross_cell);
         }
+    }
+
+    public void onEventMainThread(MatchOverEvent event) {
+        Toast.makeText(GamePlayActivity.this, "someone wins" +" " + event.isSomeOneWins(), Toast.LENGTH_SHORT).show();
+        String dialogTitle, dialogButton;
+        dialogButton = "OK";
+        if(event.isSomeOneWins() == true) {
+
+            dialogTitle = "Congrats! " + event.getWinner() + " wins!";
+        }
+        else {
+            dialogTitle = "Congrats! Draw game!";
+        }
+        AlertDialog.Builder matchOverDialog = new AlertDialog.Builder(this);
+        matchOverDialog.setMessage(dialogTitle);
+        matchOverDialog.setPositiveButton(dialogButton,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+        AlertDialog alertDialog = matchOverDialog.create();
+        alertDialog.show();
     }
 
     @Override
