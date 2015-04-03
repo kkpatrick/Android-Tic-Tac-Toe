@@ -32,6 +32,7 @@ public class MainActivity extends ActionBarActivity {
                 Intent intent = new Intent(v.getContext(), GamePlayActivity.class);
                 intent.putExtra(CHOSEN_BUTTON, PLAYER_VS_COM);
                 startActivity(intent);
+                finish();
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +41,7 @@ public class MainActivity extends ActionBarActivity {
                 Intent intent = new Intent(v.getContext(), GamePlayActivity.class);
                 intent.putExtra(CHOSEN_BUTTON, PLAYER1_VS_PLAYER2);
                 startActivity(intent);
+                finish();
             }
         });
     }
