@@ -173,14 +173,14 @@ public class GameModel {
         }
 
         //judge if game draw
-        boolean isDraw = true;
+        boolean emptyExist = false;
         for(int i = 0; i <= 2; i++) {
             for(int j = 0; j <= 2; j++) {
-                if(board.getCells()[i][j].getContent() != Seed.EMPTY)
-                    isDraw = false;
+                if(board.getCells()[i][j].getContent() == Seed.EMPTY)
+                    emptyExist = true;
             }
         }
-        if(isDraw == true){
+        if(emptyExist == false){
             EventBus.getDefault().post(new MatchOverEvent(false)); //no one wins
         }
     }
