@@ -3,6 +3,7 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@mipmap/splash"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
     <TextView
@@ -12,17 +13,9 @@
         android:text="Welcome ! Let&apos;s Play!"
         android:id="@+id/welcomeText"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Please choose"
-        android:id="@+id/chooseButton"
-        android:layout_below="@+id/welcomeText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp" />
+        android:textColor="#ff27ff95"
+        android:textSize="35dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -30,7 +23,10 @@
         android:text="Player VS Com"
         android:id="@+id/button1"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffff0883"
+        android:background="@android:color/transparent"
+        android:textSize="30dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -38,5 +34,8 @@
         android:text="Player1 VS Player2"
         android:id="@+id/button2"
         android:layout_below="@+id/button1"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#ff15ff3a"
+        android:background="@android:color/transparent"
+        android:textSize="30dp" />
 </RelativeLayout>
