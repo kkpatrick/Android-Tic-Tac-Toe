@@ -255,4 +255,8 @@ public class GameModel {
             }
         }
     }
+
+    public VsMode getVsMode() {
+        return VsMode;
+    }
 }

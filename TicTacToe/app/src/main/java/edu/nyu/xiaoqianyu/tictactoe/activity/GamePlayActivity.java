@@ -163,13 +163,19 @@ public class GamePlayActivity extends ActionBarActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) { // Back key event
             alertDialog = new AlertDialog.Builder(this)
                     .setTitle("EXIT")
-                    .setMessage("Return to level selection?")
+                    .setMessage("Give up the match?")
                     .setPositiveButton("OK",
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog,
                                                     int which) {
-                                    Intent intent = new Intent(getApplicationContext(), LevelChooseActivity.class);
+                                    Intent intent;
+                                    if (gameModel.getVsMode() == VsMode.PLAYER_VS_COM) {
+                                        intent = new Intent(getApplicationContext(), LevelChooseActivity.class);
+                                    }
+                                    else {
+                                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    }
                                     startActivity(intent);
                                     finish();
                                 }
